@@ -154,10 +154,6 @@ public class Tela1_principal extends JFrame {
 		Relatorios.setFont(new Font("Graphik Medium", Font.PLAIN, 22));
 		Relatorios.setBounds(793, 311, 124, 16);
 		Tela1.add(Relatorios);
-		
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setBounds(606, 44, 115, 111);
-		Tela1.add(lblNewLabel);
 	}
 }
 
