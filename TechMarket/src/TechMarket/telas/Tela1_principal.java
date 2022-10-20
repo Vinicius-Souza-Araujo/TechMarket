@@ -58,10 +58,10 @@ public class Tela1_principal extends JFrame {
 		
 		JButton botao_produto = new JButton("");
 		botao_produto.setIcon(new ImageIcon(Tela1_principal.class.getResource("/TechMarket/telas/product.png")));
-		botao_produto.setBounds(323, 339, 196, 199);
-		botao_produto.setToolTipText("");
-		botao_produto.setForeground(new Color(27, 40, 161));
-		botao_produto.setFont(new Font("Graphik Semibold", Font.PLAIN, 19));
+		botao_produto.setBounds(323, 339, 193, 199);
+		botao_produto.setToolTipText("produto");
+		botao_produto.setForeground(new Color(0, 0, 128));
+		botao_produto.setFont(new Font("Graphik Medium", Font.PLAIN, 24));
 		botao_produto.setBackground(new Color(18, 27, 103));
 		botao_produto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -116,7 +116,7 @@ public class Tela1_principal extends JFrame {
 				objCliente.pack();
 			}
 		});
-		botao_cliente.setToolTipText("");
+		botao_cliente.setToolTipText("cliente");
 		botao_cliente.setForeground(new Color(27, 40, 161));
 		botao_cliente.setFont(new Font("Graphik Medium", Font.PLAIN, 22));
 		botao_cliente.setBackground(new Color(28, 28, 104));
@@ -135,7 +135,7 @@ public class Tela1_principal extends JFrame {
 				objRelatorios.pack();
 			}
 		});
-		botao_relatorio.setToolTipText("");
+		botao_relatorio.setToolTipText("relatórios");
 		botao_relatorio.setForeground(new Color(27, 40, 161));
 		botao_relatorio.setFont(new Font("Graphik Medium", Font.PLAIN, 22));
 		botao_relatorio.setBackground(new Color(28, 28, 104));

@@ -27,12 +27,16 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.ParseException;
 import java.awt.Insets;
 //import com.jgoodies.forms.layout.FormLayout;
 //import com.jgoodies.forms.layout.ColumnSpec;
 //import com.jgoodies.forms.layout.RowSpec;
 import javax.swing.JToggleButton;
 import java.awt.Font;
+import javax.swing.KeyStroke;
+import java.awt.event.KeyEvent;
+import java.awt.event.InputEvent;
 
 public class Tela2Produto extends JFrame {
 
@@ -111,15 +115,22 @@ public class Tela2Produto extends JFrame {
 		
 		JButton BotaoNovo = new JButton("Novo");
 		BotaoNovo.setBackground(new Color(128, 128, 255));
+		
 		BotaoNovo.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
-				
-				Tela2_1ProdutoCadastro objCadastro = new Tela2_1ProdutoCadastro();
-				objCadastro.setVisible(true);
-				objCadastro.setResizable(true);				
-				objCadastro.setTitle("Tela2Produto");
-				objCadastro.setPreferredSize(new Dimension(1000,1000));
-				objCadastro.pack();
+				Tela2_1ProdutoCadastros objcadastro = null;
+				try {
+					objcadastro = new Tela2_1ProdutoCadastros();
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				objcadastro.setVisible(true);
+				objcadastro.setResizable(true);				
+				objcadastro.setTitle("Tela2_1ProdutoCadastro");
+				objcadastro.setPreferredSize(new Dimension(1000,720));
+				objcadastro.pack();
 			}
 		});
 		
@@ -159,6 +170,23 @@ public class Tela2Produto extends JFrame {
 		Painel_botoes.add(BotaoAlterar);
 		
 		JButton BtnCompra = new JButton("");
+		BtnCompra.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tela2_2ProdutoCompra objcompras = null;
+				try {
+					objcompras = new Tela2_2ProdutoCompra();
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				objcompras.setVisible(true);
+				objcompras.setResizable(true);				
+				objcompras.setTitle("Tela2Produto");
+				objcompras.setPreferredSize(new Dimension(1000,1000));
+				objcompras.pack();
+			}
+		});
+		
 		BtnCompra.setIcon(new ImageIcon(Tela2Produto.class.getResource("/TechMarket/telas/Botao adicionar imagem (1).png")));
 		BtnCompra.setBackground(new Color(255, 255, 255));
 		BtnCompra.setVerticalAlignment(SwingConstants.TOP);
@@ -195,25 +223,101 @@ public class Tela2Produto extends JFrame {
 		menuBar.add(MenuCliente);
 		
 		JMenuItem ClienteItem = new JMenuItem("Consultar cliente");
+		ClienteItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
 		MenuCliente.add(ClienteItem);
+		ClienteItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Tela3_cliente objItemConsultarCliente = new Tela3_cliente();
+					objItemConsultarCliente.setVisible(true);
+					objItemConsultarCliente.setResizable(true);				
+					objItemConsultarCliente.setTitle("Tela3_cliente");
+					objItemConsultarCliente.setPreferredSize(new Dimension(1080,720));
+					objItemConsultarCliente.pack();
+				
+							}
+		});
 		
 		JMenuItem CadastrarCliente = new JMenuItem("Cadastrar Cliente");
+		CadastrarCliente.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.ALT_DOWN_MASK));
 		MenuCliente.add(CadastrarCliente);
+		CadastrarCliente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Tela3_2CadastroCliente objItemCadastrarCliente = null;
+				try {
+					objItemCadastrarCliente = new Tela3_2CadastroCliente();
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+					objItemCadastrarCliente.setVisible(true);
+					objItemCadastrarCliente.setResizable(true);				
+					objItemCadastrarCliente.setTitle("Tela3_2CadastroCliente");
+					objItemCadastrarCliente.setPreferredSize(new Dimension(1080,720));
+					objItemCadastrarCliente.pack();
+				
+							}
+		});
 		
 		JMenu MenuProduto = new JMenu("Produtos");
 		menuBar.add(MenuProduto);
 		
 		JMenuItem CadastrarProdutoItem = new JMenuItem("Cadastrar produto");
+		CadastrarProdutoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.ALT_DOWN_MASK));
 		MenuProduto.add(CadastrarProdutoItem);
 		
+		CadastrarProdutoItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					Tela2_1ProdutoCadastros objItemCadastroProduto = null;
+					try {
+						objItemCadastroProduto = new Tela2_1ProdutoCadastros();
+					} catch (ParseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					objItemCadastroProduto.setVisible(true);
+					objItemCadastroProduto.setResizable(true);				
+					objItemCadastroProduto.setTitle("Tela2_1ProdutoCadastros");
+					objItemCadastroProduto.setPreferredSize(new Dimension(1080,720));
+					objItemCadastroProduto.pack();
+							}
+		});
+		
 		JMenuItem ConsultarMenu = new JMenuItem("Consultar produto");
+		ConsultarMenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
 		MenuProduto.add(ConsultarMenu);
+		CadastrarProdutoItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					Tela2Produto objItemConsultaProduto = null;
+					objItemConsultaProduto = new Tela2Produto();
+					objItemConsultaProduto.setVisible(true);
+					objItemConsultaProduto.setResizable(true);				
+					objItemConsultaProduto.setTitle("Tela2_1ProdutoCadastros");
+					objItemConsultaProduto.setPreferredSize(new Dimension(1080,720));
+					objItemConsultaProduto.pack();
+							}
+		});
 		
 		JMenu MenuRelatorios = new JMenu("Relatórios");
 		menuBar.add(MenuRelatorios);
 		
 		JMenuItem ConsultarRelatorios = new JMenuItem("Consultar relatórios");
+		ConsultarRelatorios.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.ALT_DOWN_MASK));
 		MenuRelatorios.add(ConsultarRelatorios);
+		
+		ConsultarRelatorios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tela4_relatorios objItemRelatorios = null;
+				objItemRelatorios = new Tela4_relatorios();
+				objItemRelatorios.setVisible(true);
+				objItemRelatorios.setResizable(true);				
+				objItemRelatorios.setTitle("Tela4_relatorios");
+				objItemRelatorios.setPreferredSize(new Dimension(1080,720));
+				objItemRelatorios.pack();
+							}
+		});
+		
 		
 		JPanel Botoes_Categoria = new JPanel();
 		Botoes_Categoria.setLayout(null);
@@ -239,7 +343,7 @@ public class Tela2Produto extends JFrame {
 		Botoes_Categoria.add(BotaoCatComida);
 		
 		JButton btnConsultar = new JButton("Consultar");
-		btnConsultar.setBounds(925, 249, 80, 25);
+		btnConsultar.setBounds(925, 249, 105, 25);
 		Painel_produto.add(btnConsultar);
 		btnConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
