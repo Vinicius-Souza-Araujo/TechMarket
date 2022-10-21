@@ -40,10 +40,16 @@ public void ValidarCadastro(JTextField FieldNome, JComboBox comboBoxCategoria , 
 															return;
 	} 
 	
-	if(comboBoxCategoria.getSelectedIndex()==0) {
+	else if(comboBoxCategoria.getSelectedIndex()==0) {
 		JOptionPane.showMessageDialog(contentPane,"Escolha uma categoria!");
 		return;
 	}
+	
+	else if(spinnerEstoque.getValue() == null) {
+		JOptionPane.showMessageDialog(contentPane,"Adicione um item ao estoque!");
+		return;
+	}
+	
 	
 	else if(PrecoField.getText().trim().equals("")) {
 		JOptionPane.showMessageDialog(contentPane,"Informe o preço do produto!");

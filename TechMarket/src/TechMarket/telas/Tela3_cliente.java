@@ -21,6 +21,12 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JScrollPane;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.ImageIcon;
+import javax.swing.JTextField;
 
 public class Tela3_cliente extends JFrame {
 
@@ -29,6 +35,7 @@ public class Tela3_cliente extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private JTextField txtDigiteOCpf;
 
 	/**
 	 * Launch the application.
@@ -50,15 +57,15 @@ public class Tela3_cliente extends JFrame {
 	 * Create the frame.
 	 */
 	public Tela3_cliente() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("tela3_cliente");
-		setBounds(100, 100, 832, 581);
+		setBounds(100, 100, 1217, 689);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
-		JMenu mnuTela = new JMenu("Tela");
+		JMenu mnuTela = new JMenu("Menu");
 		mnuTela.setMnemonic('A');
 		menuBar.add(mnuTela);
 		
@@ -110,31 +117,43 @@ public class Tela3_cliente extends JFrame {
 				contentPane.add(objRelatorio);
 							}
 		});
-
-		JLabel lblTitulo = new JLabel("Cliente");
-		lblTitulo.setFont(new Font("Graphik Semibold", Font.PLAIN, 43));
-		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTitulo.setForeground(new Color(255, 255, 255));
-		lblTitulo.setBounds(323, 129, 678, 111);
-		contentPane.add(lblTitulo);
+		contentPane.setLayout(null);
 
 		JPanel pnlTabela = new JPanel();
-		pnlTabela.setBounds(0, 0, 786, 316);
+		pnlTabela.setBounds(107, 308, 657, 209);
 		contentPane.add(pnlTabela);
 		
+		JScrollPane scrollPane = new JScrollPane();
+		GroupLayout gl_pnlTabela = new GroupLayout(pnlTabela);
+		gl_pnlTabela.setHorizontalGroup(
+			gl_pnlTabela.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pnlTabela.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 606, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		gl_pnlTabela.setVerticalGroup(
+			gl_pnlTabela.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_pnlTabela.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+		
 		JTable tabelaClientes = new JTable();
+		scrollPane.setViewportView(tabelaClientes);
 		tabelaClientes.setModel(new DefaultTableModel(new Object[][] {},
 								new String[] { "Id", "Nome", "CPF", "Total Compras" }));
 		tabelaClientes.setBounds(10, 32, 342, 278);
-		pnlTabela.add(tabelaClientes);
+		pnlTabela.setLayout(gl_pnlTabela);
 		
 				JButton btnNovo = new JButton("Cadastrar Novo Cliente");
 		btnNovo.setVerticalAlignment(SwingConstants.BOTTOM);
 		btnNovo.setToolTipText("");
-		btnNovo.setForeground(new Color(27, 40, 161));
-		btnNovo.setFont(new Font("Graphik Medium", Font.PLAIN, 22));
-		btnNovo.setBackground(new Color(93, 127, 216));
-		btnNovo.setBounds(763, 325, 205, 199);
+		btnNovo.setForeground(new Color(218, 218, 218));
+		btnNovo.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+		btnNovo.setBackground(new Color(10, 13, 133));
+		btnNovo.setBounds(883, 445, 247, 31);
 		contentPane.add(btnNovo);
 		btnNovo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -158,9 +177,9 @@ public class Tela3_cliente extends JFrame {
 		btnExcluir.setVerticalAlignment(SwingConstants.BOTTOM);
 		btnExcluir.setToolTipText("");
 		btnExcluir.setForeground(new Color(27, 40, 161));
-		btnExcluir.setFont(new Font("Graphik Medium", Font.PLAIN, 22));
+		btnExcluir.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 14));
 		btnExcluir.setBackground(new Color(93, 127, 216));
-		btnExcluir.setBounds(763, 325, 205, 199);
+		btnExcluir.setBounds(147, 546, 130, 31);
 		contentPane.add(btnExcluir);
 		btnExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -171,9 +190,9 @@ public class Tela3_cliente extends JFrame {
 		btnAlterar.setVerticalAlignment(SwingConstants.BOTTOM);
 		btnAlterar.setToolTipText("");
 		btnAlterar.setForeground(new Color(27, 40, 161));
-		btnAlterar.setFont(new Font("Graphik Medium", Font.PLAIN, 22));
+		btnAlterar.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 14));
 		btnAlterar.setBackground(new Color(93, 127, 216));
-		btnAlterar.setBounds(763, 325, 205, 199);
+		btnAlterar.setBounds(287, 546, 142, 31);
 		contentPane.add(btnAlterar);
 		btnAlterar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -183,11 +202,29 @@ public class Tela3_cliente extends JFrame {
 		JButton btnConsultar = new JButton("Consultar Cliente");
 		btnConsultar.setVerticalAlignment(SwingConstants.BOTTOM);
 		btnConsultar.setToolTipText("");
-		btnConsultar.setForeground(new Color(27, 40, 161));
-		btnConsultar.setFont(new Font("Graphik Medium", Font.PLAIN, 22));
-		btnConsultar.setBackground(new Color(93, 127, 216));
-		btnConsultar.setBounds(763, 325, 205, 199);
+		btnConsultar.setForeground(new Color(218, 218, 218));
+		btnConsultar.setFont(new Font("Segoe UI Semilight", Font.BOLD, 16));
+		btnConsultar.setBackground(new Color(10, 13, 133));
+		btnConsultar.setBounds(769, 267, 169, 31);
 		contentPane.add(btnConsultar);
+		
+		JLabel ImagemLogo = new JLabel("");
+		ImagemLogo.setIcon(new ImageIcon(Tela3_cliente.class.getResource("/TechMarket/telas/img.png")));
+		ImagemLogo.setHorizontalAlignment(SwingConstants.CENTER);
+		ImagemLogo.setBounds(-413, -29, 1906, 284);
+		contentPane.add(ImagemLogo);
+		
+		JLabel ImgIconCliente = new JLabel("");
+		ImgIconCliente.setIcon(new ImageIcon(Tela3_cliente.class.getResource("/TechMarket/telas/add_client.png")));
+		ImgIconCliente.setBounds(974, 354, 64, 80);
+		contentPane.add(ImgIconCliente);
+		
+		txtDigiteOCpf = new JTextField();
+		txtDigiteOCpf.setBackground(new Color(183, 199, 242));
+		txtDigiteOCpf.setFont(new Font("Segoe UI Semilight", Font.PLAIN, 14));
+		txtDigiteOCpf.setBounds(107, 271, 657, 26);
+		contentPane.add(txtDigiteOCpf);
+		txtDigiteOCpf.setColumns(10);
 		btnConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}

@@ -28,6 +28,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.awt.event.ActionEvent;
+import javax.swing.ImageIcon;
 
 public class Tela2_2ProdutoCompra extends JFrame {
 
@@ -60,8 +61,7 @@ public class Tela2_2ProdutoCompra extends JFrame {
 	public Tela2_2ProdutoCompra() throws ParseException {
 		
 		setBackground(new Color(255, 255, 255));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 832, 578);
+		setBounds(100, 100, 1219, 675);
 		PainelProduto = new JPanel();
 		PainelProduto.setBackground(new Color(255, 255, 255));
 		PainelProduto.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -71,14 +71,14 @@ public class Tela2_2ProdutoCompra extends JFrame {
 		
 		JLabel lblNewLabel = new JLabel("Carrinho");
 		lblNewLabel.setForeground(new Color(0, 0, 121));
-		lblNewLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 43));
+		lblNewLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 50));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(95, 55, 612, 42);
+		lblNewLabel.setBounds(268, 142, 612, 60);
 		PainelProduto.add(lblNewLabel);
 		
 		JPanel DadosCompra = new JPanel();
 		DadosCompra.setBackground(new Color(189, 200, 232));
-		DadosCompra.setBounds(95, 122, 612, 160);
+		DadosCompra.setBounds(225, 202, 756, 160);
 		PainelProduto.add(DadosCompra);
 		DadosCompra.setLayout(null);
 		
@@ -89,7 +89,7 @@ public class Tela2_2ProdutoCompra extends JFrame {
 		
 		
 		JFormattedTextField textFieldCpf = new JFormattedTextField();
-		textFieldCpf.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		textFieldCpf.setFont(new Font("Segoe UI Light", Font.PLAIN, 12));
 		textFieldCpf.setBounds(100, 18, 414, 20);
 		DadosCompra.add(textFieldCpf);
 		textFieldCpf.setColumns(10);
@@ -110,6 +110,7 @@ public class Tela2_2ProdutoCompra extends JFrame {
 		DadosCompra.add(lblIDProduto);
 		
 		FieldIDProduto = new JTextField();
+		FieldIDProduto.setFont(new Font("Segoe UI Light", Font.PLAIN, 12));
 		FieldIDProduto.setBounds(98, 59, 151, 20);
 		DadosCompra.add(FieldIDProduto);
 		FieldIDProduto.setColumns(10);
@@ -128,6 +129,7 @@ public class Tela2_2ProdutoCompra extends JFrame {
 		DadosCompra.add(lblQuantidade);
 		
 		JSpinner spinnerQuantidade = new JSpinner();
+		spinnerQuantidade.setFont(new Font("Segoe UI Light", Font.PLAIN, 12));
 		spinnerQuantidade.setBounds(395, 59, 119, 20);
 		DadosCompra.add(spinnerQuantidade);
 		
@@ -136,14 +138,22 @@ public class Tela2_2ProdutoCompra extends JFrame {
 		lblTotal.setBounds(28, 114, 49, 14);
 		DadosCompra.add(lblTotal);
 		
+		
 		TotalField = new JTextField();
 		TotalField.setBounds(101, 112, 413, 20);
 		DadosCompra.add(TotalField);
 		TotalField.setColumns(10);
 		
+		JButton btnNewButton_1 = new JButton("Adicionar");
+		btnNewButton_1.setForeground(new Color(224, 224, 224));
+		btnNewButton_1.setBackground(new Color(0, 0, 160));
+		btnNewButton_1.setFont(new Font("Segoe UI Light", Font.PLAIN, 14));
+		btnNewButton_1.setBounds(533, 111, 89, 23);
+		DadosCompra.add(btnNewButton_1);
+		
 		
 		JPanel TabelasCompras = new JPanel();
-		TabelasCompras.setBounds(95, 310, 612, 106);
+		TabelasCompras.setBounds(225, 373, 756, 106);
 		PainelProduto.add(TabelasCompras);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -190,11 +200,15 @@ public class Tela2_2ProdutoCompra extends JFrame {
 				objValidador.validarProduto(FieldIDProduto, textFieldCpf, TotalField);
 			}
 		});
-		botaoConfirmar.setBounds(445, 466, 111, 23);
+		botaoConfirmar.setBounds(613, 534, 111, 23);
 		PainelProduto.add(botaoConfirmar);
 		
 		JButton botaoAlterar = new JButton("Alterar");
-		botaoAlterar.setBounds(329, 466, 111, 23);
+		botaoAlterar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		botaoAlterar.setBounds(492, 534, 111, 23);
 		PainelProduto.add(botaoAlterar);
 		
 		JButton btnNovoCliente = new JButton("Novo Cliente");
@@ -215,8 +229,13 @@ public class Tela2_2ProdutoCompra extends JFrame {
 						}
 		});
 		
-		btnNovoCliente.setBounds(208, 466, 111, 23);
+		btnNovoCliente.setBounds(359, 534, 111, 23);
 		PainelProduto.add(btnNovoCliente);
+		
+		JLabel Img = new JLabel("");
+		Img.setIcon(new ImageIcon(Tela2_2ProdutoCompra.class.getResource("/TechMarket/telas/PessoaSupermercado.png")));
+		Img.setBounds(-70, 0, 1331, 131);
+		PainelProduto.add(Img);
 		
 	}
 }

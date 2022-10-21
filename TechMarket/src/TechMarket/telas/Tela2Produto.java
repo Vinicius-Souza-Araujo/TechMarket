@@ -67,7 +67,6 @@ public class Tela2Produto extends JFrame {
 	 * Create the frame.
 	 */
 	public Tela2Produto() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1241, 706);
 		Painel_produto = new JPanel();
 		Painel_produto.setBackground(new Color(255, 255, 255));

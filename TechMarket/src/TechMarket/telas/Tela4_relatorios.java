@@ -58,7 +58,6 @@ public class Tela4_relatorios extends JFrame {
 	 */
 	public Tela4_relatorios() {
 		getContentPane().setBackground(new Color(255, 255, 255));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1302, 662);
 		getContentPane().setLayout(null);
 		model = new DefaultTableModel();
