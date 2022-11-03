@@ -63,7 +63,6 @@ private JTextField txtCidade;
 	 * @throws ParseException 
 	 */
 	public Tela3_2CadastroCliente() throws ParseException {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Tela3.2 Cadastro Cliente");
 		setBounds(100, 100, 1286, 693);
 		contentPane = new JPanel();

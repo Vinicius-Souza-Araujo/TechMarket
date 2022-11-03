@@ -67,7 +67,7 @@ public class Tela2Produto extends JFrame {
 	 * Create the frame.
 	 */
 	public Tela2Produto() {
-		setBounds(100, 100, 1241, 706);
+		setBounds(100, 100, 1328, 706);
 		Painel_produto = new JPanel();
 		Painel_produto.setBackground(new Color(255, 255, 255));
 		Painel_produto.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -201,7 +201,7 @@ public class Tela2Produto extends JFrame {
 		JLabel ImagemLogo = new JLabel("New label");
 		ImagemLogo.setIcon(new ImageIcon(Tela2Produto.class.getResource("/TechMarket/telas/img.png")));
 		ImagemLogo.setHorizontalAlignment(SwingConstants.CENTER);
-		ImagemLogo.setBounds(-43, -25, 1483, 264);
+		ImagemLogo.setBounds(-83, -26, 1764, 264);
 		Painel_Logo.add(ImagemLogo);
 		
 		CampoPesquisa = new JTextField();
@@ -334,11 +334,11 @@ public class Tela2Produto extends JFrame {
 		Botoes_Categoria.add(BotaoCatHortifruit);
 		
 		JToggleButton BotaoCatBebidas = new JToggleButton("Bebidas");
-		BotaoCatBebidas.setBounds(361, 11, 73, 23);
+		BotaoCatBebidas.setBounds(361, 11, 89, 23);
 		Botoes_Categoria.add(BotaoCatBebidas);
 		
 		JToggleButton BotaoCatComida = new JToggleButton("Comida");
-		BotaoCatComida.setBounds(444, 11, 69, 23);
+		BotaoCatComida.setBounds(460, 11, 83, 23);
 		Botoes_Categoria.add(BotaoCatComida);
 		
 		JButton btnConsultar = new JButton("Consultar");

@@ -37,6 +37,7 @@ public class Tela2_2ProdutoCompra extends JFrame {
 	private JTextField FieldIDProduto;
 	private JTable table;
 	private JTextField TotalField;
+	private JTextField FieldTotal;
 
 	/**
 	 * Launch the application.
@@ -71,7 +72,7 @@ public class Tela2_2ProdutoCompra extends JFrame {
 		
 		JLabel lblNewLabel = new JLabel("Carrinho");
 		lblNewLabel.setForeground(new Color(0, 0, 121));
-		lblNewLabel.setFont(new Font("Bebas Neue", Font.PLAIN, 50));
+		lblNewLabel.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 50));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(268, 142, 612, 60);
 		PainelProduto.add(lblNewLabel);
@@ -106,12 +107,12 @@ public class Tela2_2ProdutoCompra extends JFrame {
 				
 		JLabel lblIDProduto = new JLabel("ID Produto");
 		lblIDProduto.setFont(new Font("Segoe UI Light", Font.PLAIN, 12));
-		lblIDProduto.setBounds(28, 61, 81, 14);
+		lblIDProduto.setBounds(26, 72, 81, 14);
 		DadosCompra.add(lblIDProduto);
 		
 		FieldIDProduto = new JTextField();
 		FieldIDProduto.setFont(new Font("Segoe UI Light", Font.PLAIN, 12));
-		FieldIDProduto.setBounds(98, 59, 151, 20);
+		FieldIDProduto.setBounds(100, 69, 151, 20);
 		DadosCompra.add(FieldIDProduto);
 		FieldIDProduto.setColumns(10);
 		FieldIDProduto.addKeyListener(new KeyAdapter() {
@@ -133,14 +134,14 @@ public class Tela2_2ProdutoCompra extends JFrame {
 		spinnerQuantidade.setBounds(395, 59, 119, 20);
 		DadosCompra.add(spinnerQuantidade);
 		
-		JLabel lblTotal = new JLabel("Total");
-		lblTotal.setFont(new Font("Segoe UI Light", Font.PLAIN, 12));
-		lblTotal.setBounds(28, 114, 49, 14);
-		DadosCompra.add(lblTotal);
+		JLabel lblSubTotal = new JLabel("SubTotal");
+		lblSubTotal.setFont(new Font("Segoe UI Light", Font.PLAIN, 12));
+		lblSubTotal.setBounds(28, 114, 49, 14);
+		DadosCompra.add(lblSubTotal);
 		
 		
 		TotalField = new JTextField();
-		TotalField.setBounds(101, 112, 413, 20);
+		TotalField.setBounds(101, 112, 148, 20);
 		DadosCompra.add(TotalField);
 		TotalField.setColumns(10);
 		
@@ -148,8 +149,18 @@ public class Tela2_2ProdutoCompra extends JFrame {
 		btnNewButton_1.setForeground(new Color(224, 224, 224));
 		btnNewButton_1.setBackground(new Color(0, 0, 160));
 		btnNewButton_1.setFont(new Font("Segoe UI Light", Font.PLAIN, 14));
-		btnNewButton_1.setBounds(533, 111, 89, 23);
+		btnNewButton_1.setBounds(533, 111, 133, 23);
 		DadosCompra.add(btnNewButton_1);
+		
+		FieldTotal = new JTextField();
+		FieldTotal.setColumns(10);
+		FieldTotal.setBounds(352, 112, 162, 20);
+		DadosCompra.add(FieldTotal);
+		
+		JLabel lblTotal = new JLabel("Total");
+		lblTotal.setFont(new Font("Segoe UI Light", Font.PLAIN, 12));
+		lblTotal.setBounds(310, 114, 49, 14);
+		DadosCompra.add(lblTotal);
 		
 		
 		JPanel TabelasCompras = new JPanel();
@@ -234,7 +245,7 @@ public class Tela2_2ProdutoCompra extends JFrame {
 		
 		JLabel Img = new JLabel("");
 		Img.setIcon(new ImageIcon(Tela2_2ProdutoCompra.class.getResource("/TechMarket/telas/PessoaSupermercado.png")));
-		Img.setBounds(-70, 0, 1331, 131);
+		Img.setBounds(-70, 0, 1409, 131);
 		PainelProduto.add(Img);
 		
 	}

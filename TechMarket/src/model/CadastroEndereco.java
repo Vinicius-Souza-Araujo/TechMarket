@@ -1,4 +1,4 @@
-package TechMarket.telas;
+package model;
 
 public class CadastroEndereco {
 private String estado;
