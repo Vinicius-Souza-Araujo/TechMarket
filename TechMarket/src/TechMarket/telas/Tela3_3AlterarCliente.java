@@ -52,6 +52,7 @@ public class Tela3_3AlterarCliente extends JFrame {
 	
 	
 	public Tela3_3AlterarCliente(int id) {
+		setTitle("Tela3.3 AlterarCliente");
 		setBounds(100, 100, 756, 386);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

@@ -345,6 +345,8 @@ public class Tela2_2ProdutoCompra extends JFrame {
 						                
 						        FieldIDProduto.setText("");   
 						        textFieldCpf.setText("");
+						        lblTotalValor.setText("");
+						        
 					        	JOptionPane.showMessageDialog(botaoConfirmar, "Compra gravada com sucesso!");
 					        	
 					        } else{
