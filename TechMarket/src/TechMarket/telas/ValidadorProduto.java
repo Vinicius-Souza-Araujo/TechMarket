@@ -10,6 +10,13 @@ import javax.swing.JTextField;
 import dao.ProdutoDAO;
 import model.Produtos;
 
+/**
+ * 
+ * @author Vinicius
+ *A classe validador Produto tem o proprosito de validar ações de entrada do usuário pelos campos
+ *determinado pelas suas ações.
+ */
+
 public class ValidadorProduto {
 	private JPanel contentPane;
 		
