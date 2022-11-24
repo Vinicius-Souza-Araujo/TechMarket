@@ -22,22 +22,38 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import dao.CarrinhoDAO;
+import dao.ProdutoDAO;
+import model.Carrinho;
+import model.ItemCarrinho;
+import model.Produtos;
+
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Date;
+import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
+import javax.swing.event.AncestorListener;
+import javax.swing.event.AncestorEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import javax.swing.SpinnerNumberModel;
 
 public class Tela2_2ProdutoCompra extends JFrame {
-
+	double valorTotal = 0;
+	
 	private JPanel PainelProduto;
 	private JTextField textFieldCpf;
 	private JTextField FieldIDProduto;
 	private JTable table;
-	private JTextField TotalField;
-	private JTextField FieldTotal;
 
 	/**
 	 * Launch the application.
@@ -61,6 +77,8 @@ public class Tela2_2ProdutoCompra extends JFrame {
 	 */
 	public Tela2_2ProdutoCompra() throws ParseException {
 		
+		
+		
 		setBackground(new Color(255, 255, 255));
 		setBounds(100, 100, 1219, 675);
 		PainelProduto = new JPanel();
@@ -74,12 +92,12 @@ public class Tela2_2ProdutoCompra extends JFrame {
 		lblNewLabel.setForeground(new Color(0, 0, 121));
 		lblNewLabel.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 50));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(268, 142, 612, 60);
+		lblNewLabel.setBounds(265, 125, 612, 60);
 		PainelProduto.add(lblNewLabel);
 		
 		JPanel DadosCompra = new JPanel();
 		DadosCompra.setBackground(new Color(189, 200, 232));
-		DadosCompra.setBounds(225, 202, 756, 160);
+		DadosCompra.setBounds(225, 183, 756, 179);
 		PainelProduto.add(DadosCompra);
 		DadosCompra.setLayout(null);
 		
@@ -107,12 +125,15 @@ public class Tela2_2ProdutoCompra extends JFrame {
 				
 		JLabel lblIDProduto = new JLabel("ID Produto");
 		lblIDProduto.setFont(new Font("Segoe UI Light", Font.PLAIN, 12));
-		lblIDProduto.setBounds(26, 72, 81, 14);
+		lblIDProduto.setBounds(28, 46, 81, 14);
 		DadosCompra.add(lblIDProduto);
 		
 		FieldIDProduto = new JTextField();
+		
+
+		
 		FieldIDProduto.setFont(new Font("Segoe UI Light", Font.PLAIN, 12));
-		FieldIDProduto.setBounds(100, 69, 151, 20);
+		FieldIDProduto.setBounds(100, 43, 95, 20);
 		DadosCompra.add(FieldIDProduto);
 		FieldIDProduto.setColumns(10);
 		FieldIDProduto.addKeyListener(new KeyAdapter() {
@@ -126,45 +147,108 @@ public class Tela2_2ProdutoCompra extends JFrame {
 		
 		JLabel lblQuantidade = new JLabel("Quantidade");
 		lblQuantidade.setFont(new Font("Segoe UI Light", Font.PLAIN, 12));
-		lblQuantidade.setBounds(310, 61, 74, 14);
+		lblQuantidade.setBounds(28, 71, 74, 14);
 		DadosCompra.add(lblQuantidade);
 		
 		JSpinner spinnerQuantidade = new JSpinner();
+		spinnerQuantidade.setModel(new SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
 		spinnerQuantidade.setFont(new Font("Segoe UI Light", Font.PLAIN, 12));
-		spinnerQuantidade.setBounds(395, 59, 119, 20);
+		spinnerQuantidade.setBounds(100, 71, 95, 20);
 		DadosCompra.add(spinnerQuantidade);
 		
-		JLabel lblSubTotal = new JLabel("SubTotal");
-		lblSubTotal.setFont(new Font("Segoe UI Light", Font.PLAIN, 12));
-		lblSubTotal.setBounds(28, 114, 49, 14);
-		DadosCompra.add(lblSubTotal);
-		
-		
-		TotalField = new JTextField();
-		TotalField.setBounds(101, 112, 148, 20);
-		DadosCompra.add(TotalField);
-		TotalField.setColumns(10);
-		
-		JButton btnNewButton_1 = new JButton("Adicionar");
-		btnNewButton_1.setForeground(new Color(224, 224, 224));
-		btnNewButton_1.setBackground(new Color(0, 0, 160));
-		btnNewButton_1.setFont(new Font("Segoe UI Light", Font.PLAIN, 14));
-		btnNewButton_1.setBounds(533, 111, 133, 23);
-		DadosCompra.add(btnNewButton_1);
-		
-		FieldTotal = new JTextField();
-		FieldTotal.setColumns(10);
-		FieldTotal.setBounds(352, 112, 162, 20);
-		DadosCompra.add(FieldTotal);
-		
-		JLabel lblTotal = new JLabel("Total");
-		lblTotal.setFont(new Font("Segoe UI Light", Font.PLAIN, 12));
-		lblTotal.setBounds(310, 114, 49, 14);
+		JLabel lblTotal = new JLabel("Total:");
+		lblTotal.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblTotal.setBounds(28, 113, 55, 14);
 		DadosCompra.add(lblTotal);
+		
+		JLabel lblTotalValor = new JLabel("0");
+		lblTotalValor.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblTotalValor.setBounds(90, 113, 105, 14);
+		DadosCompra.add(lblTotalValor);
+		
+		
+		JButton botaoAdicionar = new JButton("Adicionar");
+		botaoAdicionar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					
+				
+				
+				try {
+					if(FieldIDProduto.getText().equals("")) {
+						boolean verficarProduto = dao.CarrinhoDAO.verificarProduto("0");
+					}
+					
+					boolean verficarProduto = dao.CarrinhoDAO.verificarProduto(FieldIDProduto.getText());
+					if(verficarProduto == true) {
+						
+						Produtos prod = ProdutoDAO.listarPorID(Integer.parseInt(FieldIDProduto.getText()));
+						int id = Integer.parseInt(FieldIDProduto.getText());
+						String produto = prod.getNome();
+						double valor = prod.getPreco();
+						int quantidade = Integer.parseInt(spinnerQuantidade.getValue().toString());
+						int quantidadeEstoque =  prod.getEstoque();
+						if(quantidade <= quantidadeEstoque ) {
+							
+								
+						DefaultTableModel modelo = (DefaultTableModel) table.getModel();
+				        modelo.addRow(new String[]{
+				                                    String.valueOf(id),
+				                                    produto, 
+				                                    String.valueOf(valor),
+				                                    String.valueOf(quantidade)
+				                                    }
+				                    );
+						
+						
+				        
+				        double valorLinha = valor * quantidade;
+				        valorTotal += valorLinha;
+				        
+				        lblTotalValor.setText(String.valueOf(valorTotal));
+				        
+				        boolean vender;
+						try {
+							CarrinhoDAO.vender(id, quantidade);
+				
+					        
+						} catch (SQLException e1 ) {
+							// TODO Auto-generated catch block
+							
+						} catch (ClassNotFoundException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+				        
+						}else {JOptionPane.showMessageDialog(botaoAdicionar, "Estoque insuficiente no momento!");}
+				        
+						
+					}
+					
+					
+						
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					
+					FieldIDProduto.setText("");
+					
+					JOptionPane.showMessageDialog(botaoAdicionar, "Esse produto não existe no sistema!");
+				} 
+				
+				
+				
+				
+				
+			}
+		});
+		botaoAdicionar.setBounds(551, 111, 111, 23);
+		DadosCompra.add(botaoAdicionar);
+		
+		
+		
 		
 		
 		JPanel TabelasCompras = new JPanel();
-		TabelasCompras.setBounds(225, 373, 756, 106);
+		TabelasCompras.setBounds(225, 373, 756, 218);
 		PainelProduto.add(TabelasCompras);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -187,15 +271,13 @@ public class Tela2_2ProdutoCompra extends JFrame {
 		table = new JTable();
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null},
-				},
-			
+			},
 			new String[] {
-				"Quantidade", "Produto", "Valor"
+				"ID", "Produto", "Valor", "Quantidade"
 			}
 		) {
 			boolean[] columnEditables = new boolean[] {
-				false, true, true
+				false, true, true, true
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -208,19 +290,115 @@ public class Tela2_2ProdutoCompra extends JFrame {
 		botaoConfirmar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ValidadorProduto objValidador = new ValidadorProduto();
-				objValidador.validarProduto(FieldIDProduto, textFieldCpf, TotalField);
+				
+				
+					try {
+						
+						
+						int idCliente = dao.CarrinhoDAO.verificarCpf(textFieldCpf.getText());
+						
+						if (idCliente!= 0) {
+							ArrayList<ItemCarrinho> lista = new ArrayList<ItemCarrinho>();
+							
+							if(table.getRowCount()>0){
+				                for(int i=0;i<table.getRowCount();i++){
+				                	ItemCarrinho item = new ItemCarrinho();
+
+				                    item.setIdProduto(Integer.parseInt(table.getValueAt(i, 0).toString()));
+				                    item.setNome(table.getValueAt(i, 1).toString());
+				                    item.setValor(Double.parseDouble(table.getValueAt(i, 2).toString()));
+				                    item.setQuantidade(Integer.parseInt(table.getValueAt(i, 3).toString()));
+				                   
+
+				                    //Adiciono o objeto à listaItens
+				                    lista.add(item);
+
+				                }
+				        }
+							Double valorTotal = Double.parseDouble(lblTotalValor.getText());
+							
+					     
+							Carrinho objCarrinho = new Carrinho();
+							
+							objCarrinho.setIdCliente(idCliente);
+							
+							objCarrinho.setListaItens(lista);
+							
+							objCarrinho.setTotal(valorTotal);
+							
+							DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+						    Date date = new Date();
+						    String data = dateFormat.format(date);
+						    
+						    objCarrinho.setDataEhora(data);
+							if(objCarrinho.getListaItens().size() > 0) {
+							boolean retorno = CarrinhoDAO.salvar(objCarrinho);
+						
+					        if (retorno == true){
+					        	   
+					        		DefaultTableModel model = (DefaultTableModel) table.getModel();
+					        		int quantidadeLinhas = table.getRowCount();
+						                for (int i= 1;i<= quantidadeLinhas ;i++){
+
+						    				model.removeRow(0);
+						                }            
+						                
+						        FieldIDProduto.setText("");   
+						        textFieldCpf.setText("");
+					        	JOptionPane.showMessageDialog(botaoConfirmar, "Compra gravada com sucesso!");
+					        	
+					        } else{
+					        	FieldIDProduto.setText("");   
+						        textFieldCpf.setText("");
+					            JOptionPane.showMessageDialog(botaoConfirmar, "Falha na gravação!");
+					        }
+							}
+						}
+						
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						textFieldCpf.setText("");
+						JOptionPane.showMessageDialog(botaoConfirmar, "CPF não localizado no sistema!");
+						
+					}
+				
+				
+				
+					
+					
+					objValidador.validarProduto(FieldIDProduto, textFieldCpf);
+				
+				
 			}
 		});
-		botaoConfirmar.setBounds(613, 534, 111, 23);
+		botaoConfirmar.setBounds(557, 602, 111, 23);
 		PainelProduto.add(botaoConfirmar);
 		
-		JButton botaoAlterar = new JButton("Alterar");
-		botaoAlterar.addActionListener(new ActionListener() {
+		JButton botaoExcluir = new JButton("Excluir");
+		
+		botaoExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				int linhaSelecionada = table.getSelectedRow();
+				int id = Integer.parseInt(table.getValueAt(linhaSelecionada, 0).toString());
+				double valorUnit = Double.parseDouble(table.getValueAt(linhaSelecionada, 2).toString());
+				int quantidade = Integer.parseInt(table.getValueAt(linhaSelecionada, 3).toString());
+				
+				try {
+					ProdutoDAO.restorno(id, quantidade);
+				} catch (ClassNotFoundException | SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				DefaultTableModel model = (DefaultTableModel) table.getModel();
+				model.removeRow(linhaSelecionada); 
+				
+				valorTotal -= (valorUnit * quantidade);
+				lblTotalValor.setText(String.valueOf(valorTotal));
 			}
 		});
-		botaoAlterar.setBounds(492, 534, 111, 23);
-		PainelProduto.add(botaoAlterar);
+		botaoExcluir.setBounds(436, 602, 111, 23);
+		PainelProduto.add(botaoExcluir);
 		
 		JButton btnNovoCliente = new JButton("Novo Cliente");
 		btnNovoCliente.addActionListener(new ActionListener() {
@@ -240,7 +418,7 @@ public class Tela2_2ProdutoCompra extends JFrame {
 						}
 		});
 		
-		btnNovoCliente.setBounds(359, 534, 111, 23);
+		btnNovoCliente.setBounds(305, 602, 111, 23);
 		PainelProduto.add(btnNovoCliente);
 		
 		JLabel Img = new JLabel("");

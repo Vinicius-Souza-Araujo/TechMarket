@@ -2,9 +2,9 @@ package model;
 
 public class RelatorioAnalitico {
  private int idCarrinho;
- private int idProduto;
+ private String nomeProduto;
  private int quantidade;
- private double subtotal;
+ private double valorUnit;
  
  public RelatorioAnalitico() {}
  
@@ -14,22 +14,28 @@ public int getIdCarrinho() {
 public void setIdCarrinho(int idCarrinho) {
 	this.idCarrinho = idCarrinho;
 }
-public int getIdProduto() {
-	return idProduto;
+
+public String getNomeProduto() {
+	return nomeProduto;
 }
-public void setIdProduto(int idProduto) {
-	this.idProduto = idProduto;
+
+public void setNomeProduto(String nomeProduto) {
+	this.nomeProduto = nomeProduto;
 }
+
 public int getQuantidade() {
 	return quantidade;
 }
 public void setQuantidade(int quantidade) {
 	this.quantidade = quantidade;
 }
-public double getSubtotal() {
-	return subtotal;
+
+public double getValorUnit() {
+	return valorUnit;
 }
-public void setSubtotal(double subtotal) {
-	this.subtotal = subtotal;
+
+public void setValorUnit(double valorUnit) {
+	this.valorUnit = valorUnit;
 }
+
 }

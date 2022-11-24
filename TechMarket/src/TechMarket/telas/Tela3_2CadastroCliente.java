@@ -2,12 +2,14 @@ package TechMarket.telas;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.SQLException;
 import java.text.ParseException;
 
 import javax.swing.ButtonGroup;
@@ -26,7 +28,12 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+
+import model.Clientes;
+
 import javax.swing.ImageIcon;
+import javax.swing.event.AncestorListener;
+import javax.swing.event.AncestorEvent;
 
 
 
@@ -114,7 +121,7 @@ private JTextField txtCidade;
 										txtDataNascimento.setFont(new Font("Segoe UI Semilight", Font.PLAIN, 11));
 										txtDataNascimento.setBounds(154, 147, 52, 21);
 										pnlAba1.add(txtDataNascimento);
-										txtDataNascimento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+										txtDataNascimento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-##-##")));
 										//crio um evento de teclado que impede o usuário de digitar letras no campo Data Nascimento
 										txtDataNascimento.addKeyListener(new KeyAdapter() {
 											@Override
@@ -133,6 +140,15 @@ private JTextField txtCidade;
 																pnlAba1.add(lblCPF);
 																
 																		JFormattedTextField txtCPF = new JFormattedTextField();
+																		txtCPF.addAncestorListener(new AncestorListener() {
+																			public void ancestorAdded(AncestorEvent event) {
+																				
+																			}
+																			public void ancestorMoved(AncestorEvent event) {
+																			}
+																			public void ancestorRemoved(AncestorEvent event) {
+																			}
+																		});
 																		txtCPF.setBounds(76, 103, 397, 21);
 																		pnlAba1.add(txtCPF);
 																		txtCPF.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
@@ -365,13 +381,95 @@ private JTextField txtCidade;
 								//chamo o método da classe ValidadorCliente que verifica se todos os campos de endereço foram preenchidos
 				ValidadorCliente objValidador = new ValidadorCliente();
 				objValidador.validarEndereco(comboEstado, txtRua, txtNumero, txtCidade, txtCep);
+				
+				Clientes objCliente = new Clientes();
+				String nome = txtNome.getText();
+				String sexo = grupoSexo.getSelection().getActionCommand();
+				String email = txtEmail.getText();
+				String estadoCivil = grupoEstadoCivil.getSelection().getActionCommand();
+				String dataNasc = txtDataNascimento.getText();
+				String cpf = txtCPF.getText();
+				String telefone = txtTelefone.getText();
+
+				objCliente.setNome(nome);
+				objCliente.setSexo(sexo);
+				objCliente.setEmail(email);
+				objCliente.setEstadoCivil(estadoCivil);
+				objCliente.setDataNasc(dataNasc);
+				objCliente.setCpf(cpf);
+				objCliente.setTelefone(telefone);
+
+				String rua = txtRua.getText();
+				String estado = (String) comboEstado.getSelectedItem();
+				String numero = txtNumero.getText();
+				String cidade = txtNumero.getText();
+				String cep = txtCep.getText();
+					
+				objCliente.setRua(rua);
+				objCliente.setEstado(estado);
+				objCliente.setNumero(numero);
+				objCliente.setCidade(cidade);
+				objCliente.setCep(cep);
+								
+				try {
+					
+				   if(txtNome.getText() != "" && !grupoSexo.getSelection().equals("") && txtEmail.getText()!=""
+					  && !grupoEstadoCivil.getSelection().equals("") && txtDataNascimento.getText()!=""
+					  && txtCPF.getText()!="" && txtTelefone.getText()!="" && txtRua.getText()!= ""
+					  && !comboEstado.getSelectedItem().equals("Selecione um estado") && txtNumero.getText()!= ""
+					  && txtCidade.getText()!= "" && txtCep.getText()!="") {
+					boolean retorno = dao.ClienteDAO.cadastrar(objCliente);
+				    
+					if(retorno == true) {
+						JOptionPane.showMessageDialog(contentPane,"Dados enviados com sucesso!");
+						txtNome.setText("");
+						grupoSexo.clearSelection();
+						txtEmail.setText("");
+						grupoEstadoCivil.clearSelection();
+						txtDataNascimento.setText("");
+						txtCPF.setText("");
+						txtTelefone.setText("");
+						txtRua.setText("");
+						comboEstado.getSelectedItem().equals("Selecione um estado");
+						txtNumero.setText("");
+						txtCidade.setText("");
+						txtCep.setText("");
+						
+						Tela1_principal objPrincipal = new Tela1_principal();
+						objPrincipal.setVisible(true);
+														objPrincipal.setResizable(true);				
+										objPrincipal.setTitle("Tela1_principal");
+									objPrincipal.setPreferredSize(new Dimension(200,200));
+										
+						
+					}
+				   }
+				}catch(Exception ex) {JOptionPane.showMessageDialog(contentPane,"Falha ao tentar cadastrar cliente!");}
 			}});
-																																																																																												btnProximo.addActionListener(new ActionListener() {
-																																																																																													public void actionPerformed(ActionEvent e) {
-																																																																																														//chamo o método da classe ValidadorCliente que verifica se todos os campos de cadastro do cliente foram preenchidos
-																																																																																														ValidadorCliente objValidador = new ValidadorCliente();
+		btnProximo.addActionListener(new ActionListener() {
+	public void actionPerformed(ActionEvent e) {
+		try {
+			boolean retorno = dao.ClienteDAO.verificarCpfExistente(txtCPF.getText());
+			if(retorno == false) {
+				JOptionPane.showMessageDialog(contentPane, "CPF já existe no sistema!");
+				txtCPF.setText("");
+			}
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		//chamo o método da classe ValidadorCliente que verifica se todos os campos de cadastro do cliente foram preenchidos
+		ValidadorCliente objValidador = new ValidadorCliente();
+		
+		
+		
+		
+		
 objValidador.validarCadastro(grupoSexo, grupoEstadoCivil, txtNome, txtEmail, txtDataNascimento, txtCPF, txtTelefone, pnlGuias);
+
+
 																																																																																													}
 																																																																																												}); //Fim da ação do botão próximo
+	
 	}
 }

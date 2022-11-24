@@ -10,11 +10,18 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
+import dao.ProdutoDAO;
+import model.Clientes;
+import model.Produtos;
+
 public class ValidadorCliente {
 	private JPanel contentPane;
+//	Clientes objCliente = new Clientes();
 		
-public void validarCadastro(ButtonGroup grupoSexo, ButtonGroup grupoEstadoCivil, JTextField txtNome, JTextField txtEmail, JFormattedTextField txtDataNascimento, JFormattedTextField txtCPF, JFormattedTextField txtTelefone, JTabbedPane pnlGuias) {
-	if(grupoSexo.getSelection() == null) {
+ public void validarCadastro(ButtonGroup grupoSexo, ButtonGroup grupoEstadoCivil, JTextField txtNome, JTextField txtEmail, JFormattedTextField txtDataNascimento, JFormattedTextField txtCPF, JFormattedTextField txtTelefone, JTabbedPane pnlGuias) {
+
+	 
+	 if(grupoSexo.getSelection() == null) {
 		JOptionPane.showMessageDialog(contentPane,"Escolha o sexo!");
 															return;
 																											}
@@ -34,7 +41,7 @@ public void validarCadastro(ButtonGroup grupoSexo, ButtonGroup grupoEstadoCivil,
 															return;
 	}
 
-	if(txtDataNascimento.getText().replace("/", "").replace("/","").trim().equals("")) {
+	if(txtDataNascimento.getText().replace("-", "").replace("/","").trim().equals("")) {
 		JOptionPane.showMessageDialog(contentPane,"Digite a data de nascimento!");
 		return;
 	}
@@ -48,6 +55,8 @@ public void validarCadastro(ButtonGroup grupoSexo, ButtonGroup grupoEstadoCivil,
 		JOptionPane.showMessageDialog(contentPane,"Digite o Telefone!");
 		return;
 	}
+	
+	
 
 	//após o usuário preencher todos os campos, mudo para a próxima guia
 pnlGuias.setSelectedIndex(1);
@@ -78,13 +87,42 @@ pnlGuias.setSelectedIndex(1);
 			JOptionPane.showMessageDialog(contentPane,"Digite o cep!");
 																return;
 		}
-	
-		Tela1_principal objPrincipal = new Tela1_principal();
-		objPrincipal.setVisible(true);
-										objPrincipal.setResizable(true);				
-						objPrincipal.setTitle("Tela1_principal");
-					objPrincipal.setPreferredSize(new Dimension(200,200));
-						objPrincipal.pack();
-		JOptionPane.showMessageDialog(contentPane,"Dados enviados com sucesso!");				
+		
+//		String rua = txtRua.getText();
+//		String estado = (String) comboEstado.getSelectedItem();
+//		String numero = txtNumero.getText();
+//		String cidade = txtNumero.getText();
+//		String cep = txtCep.getText();
+//		
+//		objCliente.setRua(rua);
+//		objCliente.setEstado(estado);
+//		objCliente.setNumero(numero);
+//		objCliente.setCidade(cidade);
+//		objCliente.setCep(cep);
+		
+//		try {
+//			
+//			
+//			
+//			System.out.println(objCliente.getEmail()+" eu mereço aaaaaah");
+//			System.out.println(objCliente.getRua()+" eu mereço aaaaaah");
+//			boolean retorno = dao.ClienteDAO.cadastrar(objCliente);
+//			
+//			if(retorno) {
+//				JOptionPane.showMessageDialog(contentPane,"Dados enviados com sucesso!");
+//				Tela1_principal objPrincipal = new Tela1_principal();
+//				objPrincipal.setVisible(true);
+//												objPrincipal.setResizable(true);				
+//								objPrincipal.setTitle("Tela1_principal");
+//							objPrincipal.setPreferredSize(new Dimension(200,200));
+//								objPrincipal.pack();
+//				
+//			}
+//		}catch(Exception ex) {JOptionPane.showMessageDialog(contentPane,"Falha ao tentar cadastrar cliente!");}
+//	
+		
+						
 	}
+	
+	
 	}

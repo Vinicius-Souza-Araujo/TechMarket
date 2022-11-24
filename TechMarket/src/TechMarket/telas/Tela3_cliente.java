@@ -8,25 +8,35 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
+import model.Clientes;
+import model.Produtos;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JScrollPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
+import javax.swing.event.AncestorListener;
+import javax.swing.event.AncestorEvent;
 
 public class Tela3_cliente extends JFrame {
 
@@ -141,9 +151,38 @@ public class Tela3_cliente extends JFrame {
 		);
 		
 		JTable tabelaClientes = new JTable();
+		tabelaClientes.addAncestorListener(new AncestorListener() {
+			public void ancestorAdded(AncestorEvent event) {
+				try {
+					ArrayList<Clientes> lista =  dao.ClienteDAO.listarTodos();
+					DefaultTableModel modelo = (DefaultTableModel) tabelaClientes.getModel();
+					modelo.setRowCount(0);
+					
+					for (Clientes item : lista) {
+		                modelo.addRow(new String[]{String.valueOf(item.getIdCliente()),
+		                    String.valueOf(item.getNome()),
+		                    String.valueOf(item.getCpf())
+		                    
+		                });
+		            }
+				} catch (ClassNotFoundException | SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			public void ancestorMoved(AncestorEvent event) {
+			}
+			public void ancestorRemoved(AncestorEvent event) {
+			}
+		});
 		scrollPane.setViewportView(tabelaClientes);
-		tabelaClientes.setModel(new DefaultTableModel(new Object[][] {},
-								new String[] { "Id", "Nome", "CPF", "Total Compras" }));
+		tabelaClientes.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Id", "Nome", "CPF"
+			}
+		));
 		tabelaClientes.setBounds(10, 32, 342, 278);
 		pnlTabela.setLayout(gl_pnlTabela);
 		
@@ -183,6 +222,23 @@ public class Tela3_cliente extends JFrame {
 		contentPane.add(btnExcluir);
 		btnExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int linhaSelecionada = tabelaClientes.getSelectedRow();
+		        int id = Integer.parseInt(tabelaClientes.getValueAt(linhaSelecionada, 0).toString());
+		        
+		        boolean retorno;
+				try {
+					retorno = dao.ClienteDAO.excluir(id);
+					
+					if(retorno){
+			            JOptionPane.showMessageDialog(btnExcluir, "Cliente excluído com sucesso!");
+			        }else{
+			            JOptionPane.showMessageDialog(btnExcluir, "Falha na exclusão!");
+			        }
+					
+				} catch (ClassNotFoundException | SQLException e1) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(btnExcluir, "Não foi possivel apagar esse cliente, pois o mesmo já esta registrado no relatório de vendas!");
+				}
 			}
 		});
 
@@ -196,6 +252,34 @@ public class Tela3_cliente extends JFrame {
 		contentPane.add(btnAlterar);
 		btnAlterar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int indiceLinha =  tabelaClientes.getSelectedRow();
+				if(indiceLinha >= 0){
+					String produto = tabelaClientes.getModel().getValueAt(indiceLinha, 0).toString();
+					
+					JFormattedTextField txtCPF = new JFormattedTextField();
+					txtCPF.addAncestorListener(new AncestorListener() {
+						public void ancestorAdded(AncestorEvent event) {
+							
+						}
+						public void ancestorMoved(AncestorEvent event) {
+						}
+						public void ancestorRemoved(AncestorEvent event) {
+						}
+					});
+					txtCPF.setBounds(76, 103, 397, 21);
+		            int id = Integer.parseInt(tabelaClientes.getValueAt(indiceLinha, 0).toString());
+		            Tela3_3AlterarCliente novaTela = new Tela3_3AlterarCliente(id);
+		            novaTela.setVisible(true);
+		            novaTela.setPreferredSize(new Dimension(700,700));
+		            novaTela.setResizable(false);
+		            
+		           
+																	
+									
+					
+			       }else{
+			           JOptionPane.showMessageDialog(btnAlterar, "Selecione uma linha para fazer a alteração.");
+			       }
 			}
 		});
 		
@@ -227,6 +311,25 @@ public class Tela3_cliente extends JFrame {
 		txtDigiteOCpf.setColumns(10);
 		btnConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					ArrayList<Clientes> lista = dao.ClienteDAO.listarPorNome(txtDigiteOCpf.getText());
+					
+					DefaultTableModel modelo = (DefaultTableModel) tabelaClientes.getModel();
+					
+		            modelo.setRowCount(0);
+		            
+		            for (Clientes item : lista) {
+		                modelo.addRow(new String[]{
+		                    String.valueOf(item.getIdCliente()),
+		                    String.valueOf(item.getNome()),
+		                    String.valueOf(item.getCpf())
+		                    
+		                });
+		            }
+				} catch (ClassNotFoundException | SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 

@@ -4,12 +4,16 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTabbedPane;
 import javax.swing.table.DefaultTableModel;
+
+import model.Produtos;
+
 import java.awt.Color;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -27,7 +31,9 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.awt.Insets;
 //import com.jgoodies.forms.layout.FormLayout;
 //import com.jgoodies.forms.layout.ColumnSpec;
@@ -37,9 +43,11 @@ import java.awt.Font;
 import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
+import javax.swing.event.AncestorListener;
+import javax.swing.event.AncestorEvent;
 
 public class Tela2Produto extends JFrame {
-
+	private ButtonGroup btng = new ButtonGroup(); 
 	private JPanel Painel_produto;
 	private JTable table;
 	private JPanel Painel_botoes;
@@ -86,10 +94,34 @@ public class Tela2Produto extends JFrame {
 		Tabela.add(scrollPane);
 		
 		table = new JTable();
+		table.addAncestorListener(new AncestorListener() {
+			public void ancestorAdded(AncestorEvent event) {
+				try {
+					ArrayList<Produtos> lista =  dao.ProdutoDAO.listarTodos();
+					DefaultTableModel modelo = (DefaultTableModel) table.getModel();
+					modelo.setRowCount(0);
+					
+					for (Produtos item : lista) {
+		                modelo.addRow(new String[]{String.valueOf(item.getIdProduto()),
+		                    String.valueOf(item.getNome()),
+		                    String.valueOf(item.getPreco()),
+		                    String.valueOf(item.getEstoque())
+		                });
+		            }
+				} catch (ClassNotFoundException | SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			public void ancestorMoved(AncestorEvent event) {
+			}
+			public void ancestorRemoved(AncestorEvent event) {
+			}
+		});
 		table.setBackground(new Color(192, 192, 192));
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
-				{1, "Sabonete Y", "R$ 2.50", 4},
+				{"", "", "", ""},
 				{null, null, null, null},
 				{null, null, null, null},
 				{null, null, null, null},
@@ -108,7 +140,7 @@ public class Tela2Produto extends JFrame {
 		
 		Painel_botoes = new JPanel();
 		Painel_botoes.setBackground(new Color(255, 255, 255));
-		Painel_botoes.setBounds(381, 589, 449, 47);
+		Painel_botoes.setBounds(381, 589, 322, 47);
 		Painel_produto.add(Painel_botoes);
 		Painel_botoes.setLayout(null);
 		
@@ -132,18 +164,30 @@ public class Tela2Produto extends JFrame {
 				objcadastro.pack();
 			}
 		});
-		
-		JLabel TextCompra = new JLabel("Nova compra");
-		TextCompra.setFont(new Font("Tahoma", Font.PLAIN, 8));
-		TextCompra.setBounds(370, 33, 73, 14);
-		Painel_botoes.add(TextCompra);
-		TextCompra.setHorizontalAlignment(SwingConstants.CENTER);
 		BotaoNovo.setBounds(32, 11, 80, 25);
 		Painel_botoes.add(BotaoNovo);
 		
 		JButton BotaoExcluir = new JButton("Excluir");
 		BotaoExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int linhaSelecionada = table.getSelectedRow();
+		        int id = Integer.parseInt(table.getValueAt(linhaSelecionada, 0).toString());
+		        
+		        boolean retorno;
+				try {
+					retorno = dao.ProdutoDAO.excluir(id);
+					
+					if(retorno){
+			            JOptionPane.showMessageDialog(BotaoExcluir, "Produto excluído com sucesso!");
+			        }else{
+			            JOptionPane.showMessageDialog(BotaoExcluir, "Falha na exclusão!");
+			        }
+					
+				} catch (ClassNotFoundException | SQLException e1) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(BotaoExcluir, "Não foi possivel apagar esse prduto pois o mesmo já esta registrado no relatório de vendas!");
+				}
+		        
 			}
 		});
 		BotaoExcluir.setBackground(new Color(128, 128, 255));
@@ -156,7 +200,22 @@ public class Tela2Produto extends JFrame {
 				int indiceLinha =  table.getSelectedRow();
 				if(indiceLinha >= 0){
 					String produto = table.getModel().getValueAt(indiceLinha, 0).toString();
-					JOptionPane.showMessageDialog(BotaoAlterar, "Produto alterado");
+					
+					Produtos obj = new Produtos();
+		            obj.setIdProduto(Integer.parseInt(table.getValueAt(indiceLinha, 0).toString()));
+		            obj.setNome(table.getValueAt(indiceLinha, 1).toString());
+		            obj.setPreco(Double.parseDouble(table.getValueAt(indiceLinha, 2).toString()));
+		            obj.setEstoque(Integer.parseInt(table.getValueAt(indiceLinha, 3).toString()));
+		           
+		            Tela2_3ProdutoAlterar novaTela = new Tela2_3ProdutoAlterar(obj);
+		            novaTela.setVisible(true);
+		            novaTela.setPreferredSize(new Dimension(200,200));
+		            novaTela.setResizable(false);
+		            
+		           
+																	
+									
+					
 			       }else{
 			           JOptionPane.showMessageDialog(BotaoAlterar, "Selecione uma linha para fazer a alteração.");
 			       }
@@ -167,30 +226,6 @@ public class Tela2Produto extends JFrame {
 		BotaoAlterar.setBackground(new Color(128, 128, 255));
 		BotaoAlterar.setBounds(212, 11, 80, 25);
 		Painel_botoes.add(BotaoAlterar);
-		
-		JButton BtnCompra = new JButton("");
-		BtnCompra.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Tela2_2ProdutoCompra objcompras = null;
-				try {
-					objcompras = new Tela2_2ProdutoCompra();
-				} catch (ParseException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				objcompras.setVisible(true);
-				objcompras.setResizable(true);				
-				objcompras.setTitle("Tela2Produto");
-				objcompras.setPreferredSize(new Dimension(1000,1000));
-				objcompras.pack();
-			}
-		});
-		
-		BtnCompra.setIcon(new ImageIcon(Tela2Produto.class.getResource("/TechMarket/telas/Botao adicionar imagem (1).png")));
-		BtnCompra.setBackground(new Color(255, 255, 255));
-		BtnCompra.setVerticalAlignment(SwingConstants.TOP);
-		BtnCompra.setBounds(384, 0, 40, 36);
-		Painel_botoes.add(BtnCompra);
 		
 		JPanel Painel_Logo = new JPanel();
 		Painel_Logo.setBackground(new Color(255, 255, 255));
@@ -326,29 +361,169 @@ public class Tela2Produto extends JFrame {
 		Painel_produto.add(Botoes_Categoria);
 		
 		JToggleButton BotaoCatLimpeza = new JToggleButton("Limpeza");
+		BotaoCatLimpeza.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					ArrayList<Produtos> lista = dao.ProdutoDAO.listarPorCategoria(BotaoCatLimpeza.getText());
+					
+					DefaultTableModel modelo = (DefaultTableModel) table.getModel();
+					
+		            modelo.setRowCount(0);
+		            
+		            for (Produtos item : lista) {
+		                modelo.addRow(new String[]{
+		                    String.valueOf(item.getIdProduto()),
+		                    String.valueOf(item.getNome()),
+		                    String.valueOf(item.getPreco()),
+		                    String.valueOf(item.getEstoque())
+		                });
+		            }
+				} catch (ClassNotFoundException | SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		BotaoCatLimpeza.setBounds(167, 11, 83, 23);
 		Botoes_Categoria.add(BotaoCatLimpeza);
+		btng.add(BotaoCatLimpeza);
 		
 		JToggleButton BotaoCatHortifruit = new JToggleButton("Hortifruit");
+		BotaoCatHortifruit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					ArrayList<Produtos> lista = dao.ProdutoDAO.listarPorCategoria(BotaoCatHortifruit.getText());
+					
+					DefaultTableModel modelo = (DefaultTableModel) table.getModel();
+					
+		            modelo.setRowCount(0);
+		            
+		            for (Produtos item : lista) {
+		                modelo.addRow(new String[]{
+		                    String.valueOf(item.getIdProduto()),
+		                    String.valueOf(item.getNome()),
+		                    String.valueOf(item.getPreco()),
+		                    String.valueOf(item.getEstoque())
+		                });
+		            }
+				} catch (ClassNotFoundException | SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		BotaoCatHortifruit.setBounds(260, 11, 91, 23);
 		Botoes_Categoria.add(BotaoCatHortifruit);
+		btng.add(BotaoCatHortifruit);
+		
 		
 		JToggleButton BotaoCatBebidas = new JToggleButton("Bebidas");
+		BotaoCatBebidas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					ArrayList<Produtos> lista = dao.ProdutoDAO.listarPorCategoria(BotaoCatBebidas.getText());
+					
+					DefaultTableModel modelo = (DefaultTableModel) table.getModel();
+					
+		            modelo.setRowCount(0);
+		            
+		            for (Produtos item : lista) {
+		                modelo.addRow(new String[]{
+		                    String.valueOf(item.getIdProduto()),
+		                    String.valueOf(item.getNome()),
+		                    String.valueOf(item.getPreco()),
+		                    String.valueOf(item.getEstoque())
+		                });
+		            }
+				} catch (ClassNotFoundException | SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		BotaoCatBebidas.setBounds(361, 11, 89, 23);
 		Botoes_Categoria.add(BotaoCatBebidas);
+		btng.add(BotaoCatBebidas);
 		
 		JToggleButton BotaoCatComida = new JToggleButton("Comida");
+		BotaoCatComida.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					ArrayList<Produtos> lista = dao.ProdutoDAO.listarPorCategoria(BotaoCatComida.getText());
+					
+					DefaultTableModel modelo = (DefaultTableModel) table.getModel();
+					
+		            modelo.setRowCount(0);
+		            
+		            for (Produtos item : lista) {
+		                modelo.addRow(new String[]{
+		                    String.valueOf(item.getIdProduto()),
+		                    String.valueOf(item.getNome()),
+		                    String.valueOf(item.getPreco()),
+		                    String.valueOf(item.getEstoque())
+		                });
+		            }
+				} catch (ClassNotFoundException | SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		BotaoCatComida.setBounds(460, 11, 83, 23);
 		Botoes_Categoria.add(BotaoCatComida);
+		btng.add(BotaoCatComida);
 		
 		JButton btnConsultar = new JButton("Consultar");
 		btnConsultar.setBounds(925, 249, 105, 25);
 		Painel_produto.add(btnConsultar);
 		btnConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					ArrayList<Produtos> lista = dao.ProdutoDAO.listarPorNome(CampoPesquisa.getText());
+					
+					DefaultTableModel modelo = (DefaultTableModel) table.getModel();
+					
+		            modelo.setRowCount(0);
+		            
+		            for (Produtos item : lista) {
+		                modelo.addRow(new String[]{
+		                    String.valueOf(item.getIdProduto()),
+		                    String.valueOf(item.getNome()),
+		                    String.valueOf(item.getPreco()),
+		                    String.valueOf(item.getEstoque())
+		                });
+		            }
+				} catch (ClassNotFoundException | SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnConsultar.setBackground(new Color(128, 128, 255));
+		
+		JButton BtnCompra = new JButton("Nova Compra");
+		BtnCompra.setBounds(713, 594, 136, 42);
+		Painel_produto.add(BtnCompra);
+		BtnCompra.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Tela2_2ProdutoCompra objcompras = null;
+				try {
+					objcompras = new Tela2_2ProdutoCompra();
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				objcompras.setVisible(true);
+				objcompras.setResizable(true);				
+				objcompras.setTitle("Tela2Produto");
+				objcompras.setPreferredSize(new Dimension(1000,1000));
+				objcompras.pack();
+			}
+		});
+		
+		BtnCompra.setIcon(new ImageIcon(Tela2Produto.class.getResource("/TechMarket/telas/Botao adicionar imagem (1).png")));
+		BtnCompra.setBackground(new Color(255, 255, 255));
+		BtnCompra.setVerticalAlignment(SwingConstants.TOP);
 	}
 	private static void addPopup(Component component, final JPopupMenu popup) {
 	}

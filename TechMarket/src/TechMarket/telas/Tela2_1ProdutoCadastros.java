@@ -164,6 +164,8 @@ public class Tela2_1ProdutoCadastros extends JFrame {
 				ValidadorProduto objValidador = new ValidadorProduto();
 				objValidador.ValidarCadastro(FieldNome, comboBoxCategoria, PrecoField, spinnerEstoque);
 				
+				
+				
 			}
 		});
 		Botao_confirmar.setBounds(162, 286, 135, 23);

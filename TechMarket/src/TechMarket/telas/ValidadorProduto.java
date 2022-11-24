@@ -7,10 +7,13 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 
+import dao.ProdutoDAO;
+import model.Produtos;
+
 public class ValidadorProduto {
 	private JPanel contentPane;
 		
-public void validarProduto(JTextField FieldIDProduto, JFormattedTextField textFieldCpf, JTextField TotalField) {
+public void validarProduto(JTextField FieldIDProduto, JFormattedTextField textFieldCpf) {
 	
 	
 	if(textFieldCpf.getText().replace(".", "").replace("-","").trim().equals("")) {
@@ -23,14 +26,8 @@ public void validarProduto(JTextField FieldIDProduto, JFormattedTextField textFi
 															return;
 	} 
 	
-	else if(TotalField.getText().trim().equals("")) {
-		JOptionPane.showMessageDialog(contentPane,"Preenchar o total do produto!");
-															return;
-	}
 	
-	else {
-		JOptionPane.showMessageDialog(contentPane,"Compra confirmada!");
-	}
+	
 }
 
 public void ValidarCadastro(JTextField FieldNome, JComboBox comboBoxCategoria , JTextField PrecoField, JSpinner spinnerEstoque) {
@@ -58,7 +55,21 @@ public void ValidarCadastro(JTextField FieldNome, JComboBox comboBoxCategoria , 
 	
 	
 	else {
-		JOptionPane.showMessageDialog(contentPane,"Produto Cadastrado!");
+		try {
+			String nome = FieldNome.getText();
+			String categoria = (String) comboBoxCategoria.getSelectedItem();
+			double preco = Double.parseDouble(PrecoField.getText().toString());
+			int estoque = Integer.parseInt(spinnerEstoque.getValue().toString());
+			
+			Produtos objProduto = new Produtos(nome, categoria, preco, estoque);
+			
+			boolean retorno = ProdutoDAO.cadastrar(objProduto);
+			
+			if(retorno) {
+			JOptionPane.showMessageDialog(contentPane, "Produto cadastrado com sucesso!");
+			}
+		}catch(Exception ex) {JOptionPane.showMessageDialog(contentPane,"Falha ao gravar produto!");}
+		
 	}
 }
 
