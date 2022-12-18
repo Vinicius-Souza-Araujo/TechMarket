@@ -2,18 +2,14 @@
 
 
 ## Tecnologia utilizada:
-
+![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white)
 
 ## Bibliotecas utilizadas:
- - aos : 3.0.0-beta.6;
- - axios : 1.2.1;
- - react-chartjs-2 : 5.0.1.
+ - mysql-connector-java-8.0.20.
  
 ## O que preciso fazer para rodar o programa?🤔
-Basta que baixe os arquivos e na pasta dos mesmos digite no cmd:
-npm install.
+Com o projeto aberto na IDE você precisará instalar a biblioteca mysql-connector.
 
-Depois de instalado em sua máquina digite:
-npm start.
+
 
 
