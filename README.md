@@ -1,4 +1,8 @@
-# TechMarket
+# TechMarket🛒
+> Status do Projeto: : Concluído✔️
+
+## Descrição do Projeto:
+O projeto TechMarket foi desenvolvido como atividade da instituição Centro Universitário Senac - Santo Amaro, sendo voltado a disciplina PI.  O objetivo é realizar a criação de uma aplicação desktop para um mercado fictício, com o intuito de praticar o CRUD de uma aplicação java com JDBC.
 
 
 ## Tecnologia utilizada:
